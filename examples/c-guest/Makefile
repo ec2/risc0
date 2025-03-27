@@ -27,12 +27,11 @@ default: execute
 
 .PHONY: platform
 platform:
-	cargo +risc0 rustc -p zkvm-platform --target riscv32im-risc0-zkvm-elf --lib --crate-type staticlib --release --target-dir ./guest/out/platform
+	CARGO_TARGET_DIR=${PWD}/guest/out/platform cargo +risc0 rustc -p zkvm-platform --target riscv32im-risc0-zkvm-elf --lib --crate-type staticlib --release  -vv
 
 # Regenerate the header file. Assumes cbindgen installed locally.
 .PHONY: headers
 headers:
-    # Note: this is currently broken on main, as there is a FFI incompatible type
 	cd ./platform && cbindgen --crate zkvm-platform -c ./cbindgen.toml -o ../guest/platform.h
 
 .PHONY: gcc
