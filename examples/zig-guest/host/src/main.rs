@@ -22,10 +22,9 @@ fn main() -> anyhow::Result<()> {
     tracing_subscriber::fmt()
         .with_env_filter(tracing_subscriber::filter::EnvFilter::from_default_env())
         .init();
-
     // Load built gcc program and compute it's image ID.
     // TODO have the image ID be calculated at compile time, to avoid potential vulnerabilities
-    let guest_elf = fs::read("./guest/out/main")?;
+    let guest_elf = fs::read("./guest/zig-out/bin/guest").expect("failed to read guest ELF");
     let program_binary = ProgramBinary::new(&guest_elf, V1COMPAT_ELF);
     let consensus_elf = program_binary.encode();
     let consensus_id = compute_image_id(&consensus_elf)?;

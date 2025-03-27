@@ -38,6 +38,7 @@ members = [
   "wordle",
   "wordle/core",
   "xgboost",
+  "zig-guest/host",
 ]
 
 # Always optimize; otherwise tests take excessively long.

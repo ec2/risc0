@@ -2,51 +2,29 @@
 //! you are building an executable. If you are making a library, the convention
 //! is to delete this file and start with root.zig instead.
 
-pub fn main() !void {
-    // Prints to stderr (it's a shortcut based on `std.io.getStdErr()`)
-    std.debug.print("All your {s} are belong to us.\n", .{"codebase"});
-
-    // stdout is for the actual output of your application, for example if you
-    // are implementing gzip, then only the compressed bytes should be sent to
-    // stdout, not any debugging messages.
-    const stdout_file = std.io.getStdOut().writer();
-    var bw = std.io.bufferedWriter(stdout_file);
-    const stdout = bw.writer();
-
-    try stdout.print("Run `zig build test` to run the tests.\n", .{});
-
-    try bw.flush(); // Don't forget to flush!
-}
+const platform = @cImport({
+    @cDefine("DEFINE_ZKVM", {});
+    @cInclude("platform.h");
+});
 
 const std = @import("std");
 
-/// This imports the separate module containing `root.zig`. Take a look in `build.zig` for details.
-const lib = @import("guest_lib");
+const U32Cast = extern union {
+    num: u32,
+    bytes: [4]u8,
+};
 
-// #include "platform.h"
-// #include <assert.h>
-// #include <stdint.h>
+export fn main() void {
+    platform.init_allocator();
+    const hasher = platform.init_sha256();
+    var a = U32Cast{ .num = 0 };
+    var b = U32Cast{ .num = 0 };
 
-// union u32_cast {
-//   uint32_t value;
-//   uint8_t buffer[4];
-// };
+    std.debug.assert(platform.env_read(&a.bytes, 4) == 4);
+    std.debug.assert(platform.env_read(&b.bytes, 4) == 4);
 
-// int main() {
-//   init_allocator();
-//   // TODO introduce entropy into memory image (for zk)
-//   sha256_state* hasher = init_sha256();
+    a.num *= b.num;
+    platform.env_commit(hasher, &a.bytes, @sizeOf(u32));
 
-//   // Read two u32 values from the host, assuming LE byte order.
-//   union u32_cast a;
-//   union u32_cast b;
-//   assert(env_read(a.buffer, 4) == 4);
-//   assert(env_read(b.buffer, 4) == 4);
-
-//   a.value *= b.value;
-
-//   env_commit(hasher, a.buffer, sizeof(a.buffer));
-//   env_exit(hasher, 0);
-
-//   return 0;
-// }
+    platform.env_exit(hasher, 0);
+}

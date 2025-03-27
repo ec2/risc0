@@ -45,11 +45,11 @@ gcc:
 
 .PHONY: guest
 guest: gcc platform
-	${ROOT_DIR}riscv32im-${MACHINE}/bin/riscv32-unknown-elf-gcc -nostartfiles ./guest/main.c -o ./guest/out/main -L${ROOT_DIR}guest/out/platform/riscv32im-risc0-zkvm-elf/release -lzkvm_platform -T ./guest/riscv32im-risc0-zkvm-elf.ld -D DEFINE_ZKVM
+	cd ./guest && zig build
 
 .PHONY: execute
 execute: guest
-	RISC0_DEV_MODE=true cargo run -p c-guest-host
+	RISC0_DEV_MODE=true cargo run -p zig-guest-host
 
 .PHONY: prove
 prove: guest
