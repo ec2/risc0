@@ -1,0 +1,6 @@
+.DS_Store
+target/
+riscv32im*/
+Cargo.lock
+.zig-cache/
+zig-out/
