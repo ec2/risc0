@@ -22,10 +22,6 @@ union u32_cast {
 };
 
 int main() {
-  init_allocator();
-  // TODO introduce entropy into memory image (for zk)
-  sha256_state* hasher = init_sha256();
-
   // Read two u32 values from the host, assuming LE byte order.
   union u32_cast a;
   union u32_cast b;
@@ -34,8 +30,7 @@ int main() {
 
   a.value *= b.value;
 
-  env_commit(hasher, a.buffer, sizeof(a.buffer));
-  env_exit(hasher, 0);
+  env_commit(a.buffer, sizeof(a.buffer));
 
   return 0;
 }

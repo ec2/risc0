@@ -15,8 +15,6 @@ const U32Cast = extern union {
 };
 
 export fn main() void {
-    platform.init_allocator();
-    const hasher = platform.init_sha256();
     var a = U32Cast{ .num = 0 };
     var b = U32Cast{ .num = 0 };
 
@@ -24,7 +22,5 @@ export fn main() void {
     std.debug.assert(platform.env_read(&b.bytes, 4) == 4);
 
     a.num *= b.num;
-    platform.env_commit(hasher, &a.bytes, @sizeOf(u32));
-
-    platform.env_exit(hasher, 0);
+    platform.env_commit(&a.bytes, @sizeOf(u32));
 }

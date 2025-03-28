@@ -6,7 +6,14 @@ edition = "2021"
 [dependencies]
 risc0-binfmt = { path = "../../../risc0/binfmt", default-features = false }
 risc0-zkp = { path = "../../../risc0/zkp", default-features = false }
-risc0-zkvm-platform = { path = "../../../risc0/zkvm/platform", features = ["rust-runtime", "export-syscalls"] }
+risc0-zkvm-platform = { path = "../../../risc0/zkvm/platform", features = [
+  "rust-runtime",
+  "export-syscalls",
+] }
+risc0-zkvm = { path = "../../../risc0/zkvm", default-features = false, features = [
+  "std",
+  "unstable",
+] }
 
 [build-dependencies]
 cbindgen = { version = "0.28" }

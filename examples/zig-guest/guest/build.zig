@@ -33,9 +33,9 @@ pub fn build(b: *std.Build) void {
 
     exe.setLinkerScript(b.path("riscv32im-risc0-zkvm-elf.ld"));
 
-    exe.addIncludePath(b.path("../riscv32im-osx-arm64/riscv32-unknown-elf/include/"));
-    exe.addObjectFile(b.path("../riscv32im-osx-arm64/riscv32-unknown-elf/lib/libc.a"));
-    exe.addObjectFile(b.path("../riscv32im-osx-arm64/riscv32-unknown-elf/lib/libstdc++.a"));
+    exe.addIncludePath(b.path("../riscv32im-linux-x86_64/riscv32-unknown-elf/include/"));
+    exe.addObjectFile(b.path("../riscv32im-linux-x86_64/riscv32-unknown-elf/lib/libc.a"));
+    exe.addObjectFile(b.path("../riscv32im-linux-x86_64/riscv32-unknown-elf/lib/libstdc++.a"));
 
     b.installArtifact(exe);
 }

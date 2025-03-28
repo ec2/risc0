@@ -6070,6 +6070,7 @@ dependencies = [
  "cbindgen",
  "risc0-binfmt",
  "risc0-zkp",
+ "risc0-zkvm",
  "risc0-zkvm-platform",
 ]
 
