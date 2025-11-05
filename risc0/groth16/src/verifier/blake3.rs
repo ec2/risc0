@@ -1,4 +1,7 @@
-use crate::{from_u256, g1_from_bytes, g2_from_bytes, Seal, Verifier, VerifyingKey};
+extern crate alloc;
+
+use crate::{Seal, Verifier, VerifyingKey, from_u256, g1_from_bytes, g2_from_bytes};
+use alloc::vec;
 use anyhow::{Error, Result};
 use ark_bn254::Bn254;
 use ark_ff::PrimeField;

@@ -4,6 +4,7 @@ use crate::{
     Digest, MaybePruned, SystemState, VerifierContext,
     sha::{self, DIGEST_BYTES, Digestible, Sha256},
 };
+use alloc::vec::Vec;
 use anyhow::Context;
 use borsh::{BorshDeserialize, BorshSerialize};
 use serde::{Deserialize, Serialize};
